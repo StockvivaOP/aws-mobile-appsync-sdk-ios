@@ -1,5 +1,5 @@
 language: swift
-osx_image: xcode10.2
+osx_image: xcode11
 env:
   global:
   - FRAMEWORK_NAME=AWSAppSync
@@ -16,11 +16,11 @@ before_deploy:
 - carthage build --no-skip-current
 - carthage archive $FRAMEWORK_NAME
 script:
-- xcodebuild -workspace AWSAppSyncClient.xcworkspace -scheme AWSAppSync build test -destination 'platform=iOS Simulator,name=iPhone 6,OS=latest'
+- xcodebuild -quiet -workspace AWSAppSyncClient.xcworkspace -scheme AWSAppSync build test -destination 'platform=iOS Simulator,name=iPhone 11,OS=latest'
 deploy:
 - provider: releases
   api_key:
-    secure: "Mu3YGjSxtBDZKNCgHit63OPyMhxeJN8d+WoTAWbWtgrlPHeOMce6NI6mGSWixqL9W2F6rWSsyLhIiknrU/5zqcQyNYHhWLlQfbjmOHMEgSDQ5TPyXfIHJZo8RuXmPEXfptZvXa/6et+6N+kjJyO8PcjQl1kDbsnpCPPLas9AgzERXfPuiQlC9gL7dFQp//rYT/vzn08RV9i9nN0Qv+nkOCrnIfp+Vy/J5duhbGPhl05U5JO1VKGNSxiasXS55x+zgnKCAmCHEarkX9Tz/8TGCowDfsVhsmh52RysxJQ6eqXQIOVJZG5p/yg96dAMw/vXCLS99TlHRDLTgG0U3AL8i+fcgnBTeXyumCF0RQoVdKqDyjH82ip+UWc3+vYdRgfs1azsSiKMpK7aoKqFepinvds7x8URAXZF1+b6yYCXSYXIu4GsVoVs/7c9RJdy1QC5KQV4E0ix1AhxRcgzY/JeNvyKmmd0vTmLdVVH9ROz0aQZyHyevSRDwAOciHnado/jt/9yCGs+EgyOKvBfOZL8VL3NUXlMVFU/gPRinkN3mUc7I+NdVXl9w7okthmEwz6uqq6EEM2xr/Uro6Zi+YBPRvU7kC3xjsYoRPXJl8OWU0EK8BRbOGPbl1OkVU8JCQfEP8CLMYk1mCnRGkvaVd2rqlcRiOtrYf6qdsbT5LAu79I="
+    secure: "FysNiVJ1yiVAH0znAukBnpUoi8quQ5YQSp4Fxp71Z5Ca6BWjIFT/TC/COpAEtwFivrpCrSo/rJHSPuCWvtFOTQ2ZDp4G7UzkHA8RWPSiHZqrhDBU8Ea5EY22LynSNHiIHL/BTvy2LcfF5K7xMzc51DHHou0hoqh0FSCRjDi88I0xxIRJQ8KjcVaKLwhQYJLykEvs57bGLNELfukhh9zZh8uPwhSTzYdJVyulDdb3Q3GQShNYbQxUoMcPRg44uZrMAPeh/V38eNCPHyNgAKaYoAQ0HfZbUAeZGQvz+Z0GkZwtdhYigSLwOfgzw0z2lZROeNwzG3WQlAHsZDg5/5eMAM8z4HKWDIzy1tHgqXAvdqXIpPmYrHOXNj9aEUS5CEqZn5q2ClTzj2wHTaFFbKtv6BwSEJVotmDQNcNeOqBGZww4sxNy+IjxERWo3UwyY1qvmqo1sOCuXYSqG16DTwxfL43W3QgWXZPIgiJJhiStiUyGau//abMytD0xDztfe2xSH+EnVTgk+j9tFRXij3JuYHO9sxxVHBRiACDRbj7+q2YrjM4uyE4d9Huun0TMRwkyuEJGRQ/ij3qNX40Qv9iXH3abUhZ00FAB6RCh0FVUUZDv01fY0w6BPnCqd1ZMPA4at5nEVh8DSAsU7P2gB/cw7OM8tZ7KNs7PbRWGv4eYnGM="
   file: "$FRAMEWORK_NAME.framework.zip"
   skip_cleanup: true
   on:
