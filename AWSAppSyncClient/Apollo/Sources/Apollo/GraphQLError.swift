@@ -19,6 +19,15 @@ public struct GraphQLError: Error {
     return object[key]
   }
   
+    /// A description of the error.
+    public var code: Int {
+        if let _extension = self.object["extensions"] as? JSONObject,
+            let _errorCode = _extension["reason"] as? Int {
+            return _errorCode
+        }
+        return -1
+    }
+    
   /// A description of the error.
   public var message: String {
     return self["message"] as! String
