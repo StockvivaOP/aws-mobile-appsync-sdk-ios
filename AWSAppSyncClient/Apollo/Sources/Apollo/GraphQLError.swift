@@ -28,6 +28,11 @@ public struct GraphQLError: Error {
         return -1
     }
     
+    public func convertToError() -> Error {
+        let _err = self as NSError
+        return NSError(domain: _err.domain, code: self.code, userInfo: _err.userInfo)
+    }
+    
   /// A description of the error.
   public var message: String {
     return self["message"] as! String
