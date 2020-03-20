@@ -2,6 +2,12 @@ import Foundation
 
 extension URLSessionTask: Cancellable {}
 
+//stockviva
+public protocol HTTPNetworkTransportDelegate {
+    func getCommonRequestHeader<Operation>(operation: Operation) -> [String:String]?
+}
+
+
 /// A transport-level, HTTP-specific error.
 public struct GraphQLHTTPResponseError: Error, LocalizedError {
   public enum ErrorKind {
@@ -46,6 +52,8 @@ public class HTTPNetworkTransport: NetworkTransport {
   let url: URL
   let session: URLSession
   let serializationFormat = JSONSerializationFormat.self
+  //stockviva
+  public var delegate:HTTPNetworkTransportDelegate?
   
   /// Creates a network transport with the specified server URL and session configuration.
   ///
@@ -72,6 +80,13 @@ public class HTTPNetworkTransport: NetworkTransport {
     request.httpMethod = "POST"
     
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    
+    //stockviva
+    if let _headerList = self.delegate?.getCommonRequestHeader(operation: operation) {
+        for _item in _headerList {
+            request.setValue(_item.value, forHTTPHeaderField: _item.key)
+        }
+    }
 
     let body = requestBody(for: operation)
     request.httpBody = try! serializationFormat.serialize(value: body)
