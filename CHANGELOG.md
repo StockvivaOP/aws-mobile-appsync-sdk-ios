@@ -3,35 +3,55 @@
 The AWS AppSync SDK for iOS enables you to access your AWS AppSync backend and perform operations like `Queries`, `Mutations` and `Subscriptions`. The SDK
 also includes support for offline operations.
 
-## 3.0.1
+## 3.1.0
+
+### General SDK improvements
+- Add Codable and Hashable to AWSAppSyncAuthType. See [PR #352](https://github.com/awslabs/aws-mobile-appsync-sdk-ios/pull/352) Thanks [@LachlanMcCulloch](https://github.com/LachlanMcCulloch)!
+- Improved AppSyncSubscriptionWithSync with fixing retain cycle and adding `isCancelled` state. See [Issue #342](https://github.com/awslabs/aws-mobile-appsync-sdk-ios/issues/342) and [PR #355](https://github.com/awslabs/aws-mobile-appsync-sdk-ios/pull/355). Thanks, [@LachlanMcCulloch](https://github.com/LachlanMcCulloch)!
+- Use AppSyncRealTimeClient 1.1.0 containing consolidated interceptors. See [PR #353](https://github.com/awslabs/aws-mobile-appsync-sdk-ios/pull/353) for more details
+- Update to use AppSyncRealTimeClient ~> 1.1, with Cartfile fix. See [PR #367](https://github.com/awslabs/aws-mobile-appsync-sdk-ios/pull/367)
+
+## 3.0.2
 
 ### Bug Fixes
 
 - Default to `exponential` AWSAppSyncRetryStrategy when scheduling a delta sync when the appSyncClient reference is unavailable ([#325](https://github.com/awslabs/aws-mobile-appsync-sdk-ios/issues/325)).
+- Remove force-unwrap in derivation of retry strategy during delta sync. See [issue #325](https://github.com/awslabs/aws-mobile-appsync-sdk-ios/issues/325) [PR #327](https://github.com/awslabs/aws-mobile-appsync-sdk-ios/pull/327).
+- Fix strong reference cycle in delta sync. See [issue #342](https://github.com/awslabs/aws-mobile-appsync-sdk-ios/issues/342) [PR #343](https://github.com/awslabs/aws-mobile-appsync-sdk-ios/pull/343). Thanks, [@LachlanMcCulloch](https://github.com/LachlanMcCulloch)!
+
+### Misc. Updates
+- Moved Realtime subscription connection logic to a separate package. See [PR #338](https://github.com/awslabs/aws-mobile-appsync-sdk-ios/pull/338)
+- Made internal subscription connection to receive null as data in variables.
+- Updated podspec file to use the right source file.
+
+## 3.0.1
+
+### Deprecated release
+This release is deprecated due to errors. Please use 3.0.2 or greater.
 
 ## 3.0.0
 
 ### General SDK improvements
 
-- * **Breaking API Changes**
-    - Added support for connecting to AWS AppSync using pure WebSockets for GraphQL subscriptions.
-        - Selection set filtering will be done per client as each client can define their own selection set. 
+- **Breaking API Changes**
+  - Added support for connecting to AWS AppSync using pure WebSockets for GraphQL subscriptions.
+    - Selection set filtering will be done per client as each client can define their own selection set. 
  In this case the subscription selection set must be a subset of the mutation selection set. For example, 
  a subscription `addedPost{author title}` linked to the mutation `addPost(...){id author title url version}` 
  would receive only the author and the title of the post and none of the other fields. 
  However, if the mutation didn't have the author in its selection set the subscriber would get a `null` 
  value for the author field (or an error in case the author field is defined as required/not-null in the schema).
     
-        - In the earlier SDK version, if you didn’t configure the associated subscription selection set with the required fields 
+    - In the earlier SDK version, if you didn’t configure the associated subscription selection set with the required fields 
 and relied on the mutation fields to push data to subscribed client, the behavior will change when you move to this version  
 that use pure WebSockets. In the example above, a subscription without the "author" field defined in its selection set 
 would still return the author name with MQTT over WebSockets as the field is defined in the mutation, the same behavior 
 won’t apply for pure WebSockets. The subscription selection set is essential when using pure WebSockets: if a field is
 not explicitly defined in the subscription it won't be returned by AWS AppSync.
 
-- * **Breaking Build Changes**
-    - Adopted Semantic versioning
-        - Starting with version 3.0.0 AppSync AWS iOS SDK will follow [semantic versioning](https://semver.org/).
+- **Breaking Build Changes**
+  - Adopted Semantic versioning
+    - Starting with version 3.0.0 AppSync AWS iOS SDK will follow [semantic versioning](https://semver.org/).
 
 ### Misc. Updates
 

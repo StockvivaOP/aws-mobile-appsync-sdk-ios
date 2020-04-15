@@ -9,6 +9,7 @@ import XCTest
 @testable import AWSAppSync
 @testable import AWSCore
 @testable import AWSAppSyncTestCommon
+@testable import AppSyncRealTimeClient
 
 class SubscriptionMiscTests: XCTestCase {
     
@@ -110,7 +111,7 @@ class MockDelayedConnection: SubscriptionConnection {
     var subscriptionItem: SubscriptionItem!
 
     func subscribe(requestString: String,
-                   variables: [String : Any]?,
+                   variables: [String : Any?]?,
                    eventHandler: @escaping SubscriptionEventHandler) -> SubscriptionItem {
         subscriptionItem = SubscriptionItem(requestString: requestString,
                                             variables: variables,
