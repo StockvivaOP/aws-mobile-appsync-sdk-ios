@@ -1,5 +1,5 @@
 language: swift
-osx_image: xcode10.2
+osx_image: xcode11
 env:
   global:
   - FRAMEWORK_NAME=AWSAppSync
@@ -12,15 +12,16 @@ before_install:
   -d
 - brew update
 - brew outdated carthage || brew upgrade carthage
+- gem install cocoapods -v '1.8.4'
 before_deploy:
 - carthage build --no-skip-current
 - carthage archive $FRAMEWORK_NAME
 script:
-- xcodebuild -workspace AWSAppSyncClient.xcworkspace -scheme AWSAppSync build test -destination 'platform=iOS Simulator,name=iPhone 6,OS=latest'
+- xcodebuild -quiet -workspace AWSAppSyncClient.xcworkspace -scheme AWSAppSync build test -destination 'platform=iOS Simulator,name=iPhone 11,OS=latest'
 deploy:
 - provider: releases
   api_key:
-    secure: "Mu3YGjSxtBDZKNCgHit63OPyMhxeJN8d+WoTAWbWtgrlPHeOMce6NI6mGSWixqL9W2F6rWSsyLhIiknrU/5zqcQyNYHhWLlQfbjmOHMEgSDQ5TPyXfIHJZo8RuXmPEXfptZvXa/6et+6N+kjJyO8PcjQl1kDbsnpCPPLas9AgzERXfPuiQlC9gL7dFQp//rYT/vzn08RV9i9nN0Qv+nkOCrnIfp+Vy/J5duhbGPhl05U5JO1VKGNSxiasXS55x+zgnKCAmCHEarkX9Tz/8TGCowDfsVhsmh52RysxJQ6eqXQIOVJZG5p/yg96dAMw/vXCLS99TlHRDLTgG0U3AL8i+fcgnBTeXyumCF0RQoVdKqDyjH82ip+UWc3+vYdRgfs1azsSiKMpK7aoKqFepinvds7x8URAXZF1+b6yYCXSYXIu4GsVoVs/7c9RJdy1QC5KQV4E0ix1AhxRcgzY/JeNvyKmmd0vTmLdVVH9ROz0aQZyHyevSRDwAOciHnado/jt/9yCGs+EgyOKvBfOZL8VL3NUXlMVFU/gPRinkN3mUc7I+NdVXl9w7okthmEwz6uqq6EEM2xr/Uro6Zi+YBPRvU7kC3xjsYoRPXJl8OWU0EK8BRbOGPbl1OkVU8JCQfEP8CLMYk1mCnRGkvaVd2rqlcRiOtrYf6qdsbT5LAu79I="
+    secure: "wmYytAjpejTj7r8JYJjOHr5ffgr7nlc6iIFhMWppc7Ho5VK2PN69pwXjgOGjFJOutUCX3JRH8A5UmctD7UiqlhlNTnn6SrMy+NoywaRmX8bWorQIzl0NCQaK9oKl6DSswvHXVnb42oGZGIRpRVqcLtncF5VrqRgiXpD5yAcYYoQcKCGl02H8ZWvqJ88ZWjdFo+cfTmbaLKay6JPQOP4Sp2Em4j13W5h6GffuL7a3i2IYj86xSx2cY/OqbXn8dTxjos6hPkmjiBUj8wSmzeAA5lowpQ+rAbq8rquE4hx2pX5UPTxGvc9ekIEQbA3hzM0u+ci1vOnAKmGmnwXe1zPttbvD4iJzC6llD1Q60CusdDDFdskCWD74evraLFNLKZTwcLHGObJrZYJwU1ScDIQueLGHrWC9n5CdX6/9HbDm89V5rQefftIp9tLdHI82cXHmz7sJYZi4qQCBFH29HVgwYqmhoZRvudegZUoajznkNr1Guy5uuplwdbU658ptiYwAWxuMidtMcekCkEdFnDeh3vqjkrpDz7qKyHNjZMNLxyiEf0OvJMucHXIOSniRrCUWdxtAoXIyFXThbsYuzlJXBQsdJaRxVIim5H1zYJ6LvnrDAlaMMhyCpJZ2noF8wPWPRt81eMTY55tp7Ut39F21J22BP0ApusmM5etu/esExxg="
   file: "$FRAMEWORK_NAME.framework.zip"
   skip_cleanup: true
   on:

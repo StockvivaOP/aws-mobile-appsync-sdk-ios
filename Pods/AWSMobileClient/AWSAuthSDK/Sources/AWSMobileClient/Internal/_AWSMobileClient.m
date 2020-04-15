@@ -15,7 +15,7 @@
 
 #import "_AWSMobileClient.h"
 #import <AWSCognitoIdentityProvider/AWSCognitoIdentityProvider.h>
-#import <AWSMobileClient/AWSMobileClient-Swift.h>
+#import "AWSMobileClient-Mixed-Swift.h"
 #import "AWSCognitoAuth.h"
 
 @interface AWSCognitoCredentialsProvider()
@@ -145,8 +145,11 @@ signInUIConfiguration:(SignInUIOptions *)signInUIConfiguration
         NSMutableDictionary<NSString *, id> *parameters = [NSMutableDictionary new];
         parameters[@"logoImage"] = signInUIConfiguration.logoImage;
         parameters[@"backgroundColor"] = signInUIConfiguration.backgroundColor;
+        parameters[@"secondaryBackgroundColor"] = signInUIConfiguration.secondaryBackgroundColor;
+        parameters[@"primaryColor"] = signInUIConfiguration.primaryColor;
         parameters[@"navigationController"] = navController;
         parameters[@"canCancel"] = signInUIConfiguration.canCancel ? @"YES" : @"NO";
+        parameters[@"disableSignUpButton"] = signInUIConfiguration.disableSignUpButton ? @"YES" : @"NO";
         
         [NSClassFromString(@"AWSAuthUIViewController") performSelector:@selector(presentViewControllerWithConfig:completionHandler:)
                                                             withObject:(id)parameters

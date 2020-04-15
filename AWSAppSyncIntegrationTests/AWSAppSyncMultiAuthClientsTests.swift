@@ -27,30 +27,32 @@ class AWSAppSyncMultiAuthClientsTests: XCTestCase {
         )
         let iamAppSyncClient = iamHelper.appSyncClient
 
-        // Create User Pools based client. This client waits 999 seconds before returning authorization.
+        // Create User Pools based client. This client waits 120 seconds before returning authorization.
         let userPoolsHelper = try AppSyncClientTestHelper(
             with: .delayedInvalidOIDC,
             testBundle: testBundle
         )
         let userPoolsAppSyncClient = userPoolsHelper.appSyncClient
 
-        let postCreated = expectation(description: "Post created successfully.")
+        let iamPostCreated = expectation(description: "IAM auth based post created successfully.")
+        let userpoolPostCreated = expectation(description: "User pool based post created successfully.")
         let addPost = DefaultTestPostData.defaultCreatePostWithoutFileUsingParametersMutation
 
-        userPoolsAppSyncClient.perform(mutation: addPost, queue: AWSAppSyncMultiAuthClientsTests.mutationQueue) { result, error in
+        userPoolsAppSyncClient.perform(mutation: addPost,
+                                       queue: AWSAppSyncMultiAuthClientsTests.mutationQueue) { result, error in
             // The result is disregarded.
-            XCTFail("API Key based client should have finished first")
+            userpoolPostCreated.fulfill()
         }
 
-        // Delay next call to exaggerate any
-        sleep(2)
-
-        iamAppSyncClient.perform(mutation: addPost, queue: AWSAppSyncMultiAuthClientsTests.mutationQueue) { result, error in
+        iamAppSyncClient.perform(mutation: addPost,
+                                 queue: AWSAppSyncMultiAuthClientsTests.mutationQueue) { result, error in
             // The result is disregarded.
-            postCreated.fulfill()
+            iamPostCreated.fulfill()
         }
 
-        wait(for: [postCreated], timeout: AWSAppSyncMultiAuthClientsTests.networkOperationTimeout)
+        wait(for: [iamPostCreated, userpoolPostCreated],
+             timeout: AWSAppSyncMultiAuthClientsTests.networkOperationTimeout,
+             enforceOrder: true)
     }
 
     func testMultiClientSubscriptions() throws {
@@ -251,7 +253,10 @@ class AWSAppSyncMultiAuthClientsTests: XCTestCase {
         let listPostDeltaQuery = ListPostsDeltaQuery()
         let queryCallbackExpect = expectation(description: "Query callback")
 
-        _ = iamAppSyncClient.sync(baseQuery: listPostQuery
+        // Need to take a strong references to sync return
+        var watchers: [Cancellable] = []
+
+        let phase1Watcher = iamAppSyncClient.sync(baseQuery: listPostQuery
         , baseQueryResultHandler: { (result, error) in
             if let _ = result,
                 result!.source == .server {
@@ -260,6 +265,7 @@ class AWSAppSyncMultiAuthClientsTests: XCTestCase {
         }, deltaQuery: listPostDeltaQuery, deltaQueryResultHandler: { (result, transaction, error) in
             XCTFail("Not expecting a delta query result")
         })
+        watchers.append(phase1Watcher)
 
         wait(for: [queryCallbackExpect], timeout: AWSAppSyncMultiAuthClientsTests.networkOperationTimeout)
 
@@ -269,7 +275,8 @@ class AWSAppSyncMultiAuthClientsTests: XCTestCase {
 
         let deltaQueryCallbackExpect = expectation(description: "Delta query callback")
 
-        _ = iamAppSyncClient.sync(baseQuery: listPostQuery
+        // Need to take a strong reference
+        let phase2Watcher = iamAppSyncClient.sync(baseQuery: listPostQuery
         , baseQueryResultHandler: { (result, error) in
             if let result = result,
                 result.source == .server {
@@ -280,6 +287,7 @@ class AWSAppSyncMultiAuthClientsTests: XCTestCase {
                 deltaQueryCallbackExpect.fulfill()
             }
         })
+        watchers.append(phase2Watcher)
 
         wait(for: [deltaQueryCallbackExpect], timeout: AWSAppSyncMultiAuthClientsTests.networkOperationTimeout)
 
@@ -289,7 +297,8 @@ class AWSAppSyncMultiAuthClientsTests: XCTestCase {
 
         let queryCallbackExpect2 = expectation(description: "Query callback 2")
 
-        _ = iamAppSyncClient.sync(baseQuery: listPostQuery
+        // Need to take a strong reference
+        let resetWatcher = iamAppSyncClient.sync(baseQuery: listPostQuery
         , baseQueryResultHandler: { (result, error) in
             if let result = result,
                 result.source == .server {
@@ -298,6 +307,7 @@ class AWSAppSyncMultiAuthClientsTests: XCTestCase {
         }, deltaQuery: listPostDeltaQuery, deltaQueryResultHandler: { (result, transaction, error) in
             XCTFail("Not expecting a delta query result 2")
         })
+        watchers.append(resetWatcher)
 
         wait(for: [queryCallbackExpect2], timeout: AWSAppSyncMultiAuthClientsTests.networkOperationTimeout)
     }
