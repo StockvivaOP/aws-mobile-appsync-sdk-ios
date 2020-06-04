@@ -9,7 +9,8 @@ target "AWSAppSync" do
   pod "AWSCore", "~> #{AWS_SDK_VERSION}"
   pod "SQLite.swift", "~> 0.12.2"
   pod "ReachabilitySwift", "~> 5.0.0"
-  pod "AppSyncRealTimeClient", "~> 1.1"
+  #pod "AppSyncRealTimeClient", :git => "https://github.com/StockvivaOP/aws-appsync-realtime-client-ios.git", :branch => "feature/SVAppsyncRealtimeClientSwiftSDK"
+  pod "AppSyncRealTimeClient", :git => "https://github.com/StockvivaOP/aws-appsync-realtime-client-ios.git", :branch => "feature/SV_A_Upgrade_to_swift_5"
 
   pod "SwiftLint"
 end
@@ -20,7 +21,8 @@ target "AWSAppSyncTestCommon" do
   # We directly access a database connection to verify certain initialization
   # setups
   pod "SQLite.swift", "~> 0.12.2"
-  pod "AppSyncRealTimeClient", "~> 1.1"
+  #pod "AppSyncRealTimeClient", :git => "https://github.com/StockvivaOP/aws-appsync-realtime-client-ios.git", :branch => "feature/SVAppsyncRealtimeClientSwiftSDK"
+  pod "AppSyncRealTimeClient", :git => "https://github.com/StockvivaOP/aws-appsync-realtime-client-ios.git", :branch => "feature/SV_A_Upgrade_to_swift_5"
 end
 
 target "AWSAppSyncTestApp" do

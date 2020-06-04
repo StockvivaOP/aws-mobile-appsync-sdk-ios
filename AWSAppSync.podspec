@@ -14,7 +14,8 @@ Pod::Spec.new do |s|
   s.dependency 'AWSCore', '~> 2.13.0'
   s.dependency 'SQLite.swift', '~> 0.12.2'
   s.dependency 'ReachabilitySwift', '~> 5.0.0'
-  s.dependency 'AppSyncRealTimeClient', '~> 1.1'
+  s.dependency 'AppSyncRealTimeClient', :git => 'https://github.com/StockvivaOP/aws-appsync-realtime-client-ios.git', :branch => 'feature/SV_A_Upgrade_to_swift_5'
+  #s.dependency 'AppSyncRealTimeClient', :git => 'https://github.com/StockvivaOP/aws-appsync-realtime-client-ios.git', :branch => 'feature/SVAppsyncRealtimeClientSwiftSDK'
 
   s.source_files = 'AWSAppSyncClient/AWSAppSync.h', 'AWSAppSyncClient/*.swift', 'AWSAppSyncClient/Internal/**/*.{h,m,swift}', 'AWSAppSyncClient/Apollo/Sources/Apollo/*.swift'
   s.public_header_files = ['AWSAppSyncClient/AWSAppSync.h', 'AWSAppSyncClient/AWSAppSync-Swift.h', 'AWSAppSyncClient/Internal/AppSyncLogHelper.h']
