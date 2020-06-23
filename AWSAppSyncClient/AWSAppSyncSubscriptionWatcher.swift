@@ -70,7 +70,8 @@ public final class AWSAppSyncSubscriptionWatcher<Subscription: GraphQLSubscripti
             self.resultHandler?(nil, nil, AWSAppSyncSubscriptionError.setupError("Connection is nil"))
             return
         }
-        let _jsonVariables = self.subscription.variables?.mapValues({$0?.jsonValue})
+        let _jsonVariables = self.subscription.variables?.mapValues({$0?.jsonValue}) ?? self.subscription.variables
+        
         let requestString = type(of: subscription).requestString
         subscriptionItem = connection.subscribe(requestString: requestString,
                                                 variables: _jsonVariables) { [weak self] (event, item) in
