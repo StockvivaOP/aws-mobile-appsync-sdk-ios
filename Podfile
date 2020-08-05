@@ -1,27 +1,28 @@
 platform :ios, "9.0"
 
-# Comment the next line if you're not using Swift and don't want to use dynamic frameworks
 use_frameworks!
+inhibit_all_warnings!
 
-AWS_SDK_VERSION = "2.11.0"
+AWS_SDK_VERSION = "2.13.0"
 
 target "AWSAppSync" do
   pod "AWSCore", "~> #{AWS_SDK_VERSION}"
-  pod "SQLite.swift", "0.11.6"
+  pod "SQLite.swift", "~> 0.12.2"
+  pod "ReachabilitySwift", "~> 5.0.0"
+  #pod "AppSyncRealTimeClient", :git => "https://github.com/StockvivaOP/aws-appsync-realtime-client-ios.git", :branch => "feature/SVAppsyncRealtimeClientSwiftSDK"
+  pod "AppSyncRealTimeClient", :git => "https://github.com/StockvivaOP/aws-appsync-realtime-client-ios.git", :branch => "feature/SV_A_Upgrade_to_swift_5"
 
-  # We are pinning to this version as 4.3.1 updates XCode requirements to Xcode
-  # 10.2 and Swift 5. We currently intend to keep Xcode 10+ and Swift 4+ as
-  # minimum requirement for development.
-  pod "ReachabilitySwift", "4.3.0"
+  pod "SwiftLint"
 end
 
 target "AWSAppSyncTestCommon" do
-  pod "AWSCore", "~> #{AWS_SDK_VERSION}"
   pod "AWSS3", "~> #{AWS_SDK_VERSION}"
-  pod "ReachabilitySwift", "4.3.0"
+  pod "ReachabilitySwift", "~> 5.0.0"
   # We directly access a database connection to verify certain initialization
   # setups
-  pod "SQLite.swift", "0.11.6"
+  pod "SQLite.swift", "~> 0.12.2"
+  #pod "AppSyncRealTimeClient", :git => "https://github.com/StockvivaOP/aws-appsync-realtime-client-ios.git", :branch => "feature/SVAppsyncRealtimeClientSwiftSDK"
+  pod "AppSyncRealTimeClient", :git => "https://github.com/StockvivaOP/aws-appsync-realtime-client-ios.git", :branch => "feature/SV_A_Upgrade_to_swift_5"
 end
 
 target "AWSAppSyncTestApp" do

@@ -202,6 +202,59 @@ class AppSyncSubscriptionWithSyncTests: XCTestCase {
         let result = subscriptionWithSync.getOperationHash()
         XCTAssertNotNil(result, "Should produce a non nil hash when all fields are present.")
     }
+
+    func testCancel() {
+        let expectation = XCTestExpectation(description: "Base Query Handler sync - should never be called")
+        expectation.isInverted = true
+        var toggle = true
+        let subscriptionWithSync = AppSyncSubscriptionWithSync(
+            appSyncClient: appsyncClient,
+            baseQuery: listPostsQuery,
+            deltaQuery: emptyQuery,
+            subscription: emptySubscription,
+            baseQueryHandler: { (result, error) in
+                if toggle { return }
+                expectation.fulfill()
+        },
+            deltaQueryHandler: emptyDeltaQueryHandler,
+            subscriptionResultHandler: emptySubscriptionResultHandler,
+            subscriptionMetadataCache: nil,
+            syncConfiguration: .init(baseRefreshIntervalInSeconds: 1),
+            handlerQueue: queue)
+        subscriptionWithSync.cancel()
+        toggle = false
+        wait(for: [expectation], timeout: 2.0)
+    }
+
+    func testCancelWithBaseQueryAndDeinitNoStrongReferenceRetained() {
+        var subscriptionWithSync: AppSyncSubscriptionWithSync? = AppSyncSubscriptionWithSync(
+            appSyncClient: appsyncClient,
+            baseQuery: listPostsQuery,
+            deltaQuery: emptyQuery,
+            subscription: emptySubscription,
+            baseQueryHandler: listQueryHandler,
+            deltaQueryHandler: emptyDeltaQueryHandler,
+            subscriptionResultHandler: emptySubscriptionResultHandler,
+            subscriptionMetadataCache: nil,
+            syncConfiguration: .init(baseRefreshIntervalInSeconds: 1),
+            handlerQueue: queue)
+        XCTAssertNotNil(subscriptionWithSync, "subscriptionWithSync should return an initialized object")
+
+        weak var weakRef = subscriptionWithSync
+        subscriptionWithSync?.cancel()
+        subscriptionWithSync = nil
+        let expectation = XCTestExpectation(description: "subscriptionWithSync reference deinitialized")
+        DispatchQueue(label: "com.aws.subscriptionWithSync.dispatch", qos: .background).async {
+            while true {
+                if weakRef == nil {
+                    expectation.fulfill()
+                    break
+                }
+            }
+        }
+        wait(for: [expectation], timeout: 5.0)
+        XCTAssertNil(weakRef, "subscriptionWithSync was not deinitialized")
+    }
 }
 
 private class GraphGetQuery: GraphQLQuery {
