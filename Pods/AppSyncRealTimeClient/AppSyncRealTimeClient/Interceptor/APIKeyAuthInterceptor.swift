@@ -24,10 +24,13 @@ public class APIKeyAuthInterceptor: AuthInterceptor {
     /// * "x-api-key": <string> : Api key configured for AppSync API
     /// The value of payload is {}
     /// - Parameter request: Signed request
-    public func interceptConnection(_ request: AppSyncConnectionRequest,
-                             for endpoint: URL) -> AppSyncConnectionRequest {
-        let host = endpoint.host!
-        let authHeader = APIKeyAuthenticationHeader(apiKey: apiKey, host: host)
+    public func interceptConnection(
+        _ request: AppSyncConnectionRequest,
+        for endpoint: URL
+    ) -> AppSyncConnectionRequest {
+        let host = SVAppRTConfiguration.shared.systemInfoRequestDelegate?.getCustomHostOfAuthenticationHeader() ?? endpoint.host!
+        let tempApiKey = SVAppRTConfiguration.shared.systemInfoRequestDelegate?.getCustomAPIKeyOfAuthenticationHeader() ?? apiKey
+        let authHeader = APIKeyAuthenticationHeader(apiKey: tempApiKey, host: host)
         let base64Auth = AppSyncJSONHelper.base64AuthenticationBlob(authHeader)
 
         let payloadData = SubscriptionConstants.emptyPayload.data(using: .utf8)
@@ -47,16 +50,19 @@ public class APIKeyAuthInterceptor: AuthInterceptor {
     }
 
     public func interceptMessage(_ message: AppSyncMessage, for endpoint: URL) -> AppSyncMessage {
-        let host = endpoint.host!
+        let host = SVAppRTConfiguration.shared.systemInfoRequestDelegate?.getCustomHostOfAuthenticationHeader() ?? endpoint.host!
+        let tempApiKey = SVAppRTConfiguration.shared.systemInfoRequestDelegate?.getCustomAPIKeyOfAuthenticationHeader() ?? apiKey
         switch message.messageType {
         case .subscribe:
-            let authHeader = APIKeyAuthenticationHeader(apiKey: apiKey, host: host)
+            let authHeader = APIKeyAuthenticationHeader(apiKey: tempApiKey, host: host)
             var payload = message.payload ?? AppSyncMessage.Payload()
             payload.authHeader = authHeader
 
-            let signedMessage = AppSyncMessage(id: message.id,
-                                               payload: payload,
-                                               type: message.messageType)
+            let signedMessage = AppSyncMessage(
+                id: message.id,
+                payload: payload,
+                type: message.messageType
+            )
             return signedMessage
         default:
             AppSyncLogger.debug("Message type does not need signing - \(message.messageType)")
