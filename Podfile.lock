@@ -1,36 +1,39 @@
 PODS:
-  - AppSyncRealTimeClient (1.4.1):
+  - AppSyncRealTimeClient (1.4.2):
     - Starscream (~> 3.1.0)
-  - AWSAuthCore (2.13.6):
-    - AWSCore (= 2.13.6)
-  - AWSCognitoIdentityProvider (2.13.6):
-    - AWSCognitoIdentityProviderASF (= 1.0.1)
-    - AWSCore (= 2.13.6)
-  - AWSCognitoIdentityProviderASF (1.0.1)
-  - AWSCore (2.13.6)
-  - AWSMobileClient (2.13.6):
-    - AWSAuthCore (= 2.13.6)
-    - AWSCognitoIdentityProvider (= 2.13.6)
-  - AWSS3 (2.13.6):
-    - AWSCore (= 2.13.6)
+  - AWSAuthCore (2.22.0):
+    - AWSCore (= 2.22.0)
+  - AWSCognitoIdentityProvider (2.22.0):
+    - AWSCognitoIdentityProviderASF (= 2.22.0)
+    - AWSCore (= 2.22.0)
+  - AWSCognitoIdentityProviderASF (2.22.0)
+  - AWSCore (2.22.0)
+  - AWSMobileClient (2.22.0):
+    - AWSAuthCore (= 2.22.0)
+    - AWSCognitoIdentityProvider (= 2.22.0)
+    - AWSCognitoIdentityProviderASF (= 2.22.0)
+    - AWSCore (= 2.22.0)
+  - AWSS3 (2.22.0):
+    - AWSCore (= 2.22.0)
   - ReachabilitySwift (5.0.0)
   - SQLite.swift (0.12.2):
     - SQLite.swift/standard (= 0.12.2)
   - SQLite.swift/standard (0.12.2)
   - Starscream (3.1.1)
-  - SwiftLint (0.40.3)
+  - SwiftLint (0.42.0)
 
 DEPENDENCIES:
-  - AppSyncRealTimeClient (from `https://github.com/StockvivaOP/aws-appsync-realtime-client-ios.git`, branch `feature/SV_Sprint_44_2`)
-  - AWSCore (~> 2.13.0)
-  - AWSMobileClient (~> 2.13.0)
-  - AWSS3 (~> 2.13.0)
+  - AppSyncRealTimeClient (~> 1.4)
+  - AWSCore (~> 2.22.0)
+  - AWSMobileClient (~> 2.22.0)
+  - AWSS3 (~> 2.22.0)
   - ReachabilitySwift (~> 5.0.0)
   - SQLite.swift (~> 0.12.2)
   - SwiftLint
 
 SPEC REPOS:
   trunk:
+    - AppSyncRealTimeClient
     - AWSAuthCore
     - AWSCognitoIdentityProvider
     - AWSCognitoIdentityProviderASF
@@ -42,29 +45,19 @@ SPEC REPOS:
     - Starscream
     - SwiftLint
 
-EXTERNAL SOURCES:
-  AppSyncRealTimeClient:
-    :branch: feature/SV_Sprint_44_2
-    :git: https://github.com/StockvivaOP/aws-appsync-realtime-client-ios.git
-
-CHECKOUT OPTIONS:
-  AppSyncRealTimeClient:
-    :commit: 540711dab1b220e5c6156337e19a67f23e455e9d
-    :git: https://github.com/StockvivaOP/aws-appsync-realtime-client-ios.git
-
 SPEC CHECKSUMS:
-  AppSyncRealTimeClient: 879b9fa3ce3f335450ca06e0def279fa90af9e76
-  AWSAuthCore: 62e92b5ffbd66b8ba0eac471e7f90ccfa76cf63b
-  AWSCognitoIdentityProvider: 05f14f7c892df9ff764268d2ac33b4e95288e603
-  AWSCognitoIdentityProviderASF: f94f1a502e72ef3d0a1de93e10bf7a79c8698118
-  AWSCore: 2b6015f278770e745b4863ac5f45e007e647f298
-  AWSMobileClient: 420a899c4691c7f0991daa35daee82a84396ec63
-  AWSS3: ab6da163329bc03fb68e866aab130103453accd2
+  AppSyncRealTimeClient: 7fb160294d067b6c0c4b3c4ab91e953fd4cfba30
+  AWSAuthCore: b54e2008da479e5a6ffdb6b482821d8f5a9afaa4
+  AWSCognitoIdentityProvider: 32a91ad644e49e40235a408a8fbb96ea74891f19
+  AWSCognitoIdentityProviderASF: 8b92721c17f2951ecd5bcfb749d5534f2851c2c7
+  AWSCore: 8bd1def9cb0b6770c65b6d394f1c1cbc0a5562b7
+  AWSMobileClient: bba690cc09c6569cc1111141beaa4e2f789f536b
+  AWSS3: 6d254539495f866786c8d2b829ccd57de1082f92
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   SQLite.swift: d2b4642190917051ce6bd1d49aab565fe794eea3
   Starscream: 4bb2f9942274833f7b4d296a55504dcfc7edb7b0
-  SwiftLint: dfd554ff0dff17288ee574814ccdd5cea85d76f7
+  SwiftLint: 4fa9579c63416865179bc416f0a92d55f009600d
 
-PODFILE CHECKSUM: 91349a4de1cd59109fa4b830d9ca3b8d60995958
+PODFILE CHECKSUM: 7e99e5ba219e69d0468604f2f5fa4767ca52cb75
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.10.0

@@ -7,6 +7,38 @@ also includes support for offline operations.
 
 *Changes merged to `main`, but not yet released on a tag.*
 
+## 3.1.14
+
+### Misc. Updates
+
+- Update dependencies ([PR #451](https://github.com/awslabs/aws-mobile-appsync-sdk-ios/pull/451))
+
+## 3.1.13
+
+### Misc. Updates
+
+- Update dependencies. ([PR #445](https://github.com/awslabs/aws-mobile-appsync-sdk-ios/pull/445))
+
+## 3.1.12
+
+### Misc. Updates
+
+- Add a parameter for the api key expiration for integ test setup CFN template ([PR #439](https://github.com/awslabs/aws-mobile-appsync-sdk-ios/pull/439))
+- Update dependencies. ([PR #441](https://github.com/awslabs/aws-mobile-appsync-sdk-ios/pull/441))
+
+## 3.1.11
+
+### Misc. Updates
+
+- Refactored `AWSAppSyncHTTPNetworkTransport` to simplify internal auth handling, and to support providing your own `URLSession` in the new initializer. ([PR #422](https://github.com/awslabs/aws-mobile-appsync-sdk-ios/pull/422)). Thanks for the initial PR, @lesmuc! 🎉
+- Update dependencies. ([PR #436](https://github.com/awslabs/aws-mobile-appsync-sdk-ios/pull/436))
+
+## 3.1.10
+
+### Misc. Updates
+
+- Update dependencies. ([PR #432](https://github.com/awslabs/aws-mobile-appsync-sdk-ios/pull/432))
+
 ## 3.1.9
 
 ## Misc. Updates
